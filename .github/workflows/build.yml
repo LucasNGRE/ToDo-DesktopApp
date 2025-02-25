@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    environment: "Todo environnement"  # ← Ajoute ici le nom exact de ton environnement
 
     strategy:
       matrix:
@@ -38,9 +39,14 @@ jobs:
           name: release-build
           path: dist/
 
+      - name: Debug GH_TOKEN  # ← Ajoute cette étape pour vérifier si GH_TOKEN est bien accessible
+        run: echo "GH_TOKEN is set"
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
       - name: Push release to GitHub
         run: |
           echo "Creating release for tag ${{ github.ref_name }}"
           git push origin ${{ github.ref_name }}
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Assure-toi que le secret est bien défini
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
