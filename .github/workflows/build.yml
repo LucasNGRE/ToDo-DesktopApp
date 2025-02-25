@@ -3,12 +3,12 @@ name: Build and Release
 on:
   push:
     tags:
-      - 'v*'  # Exécuter uniquement lors d'un tag versionné comme v1.0.0
+      - 'v*'
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-
+    
     strategy:
       matrix:
         os: [macos-latest, windows-latest]  # Build sur macOS et Windows
@@ -26,35 +26,13 @@ jobs:
         run: |
           echo "📦 Installing dependencies..."
           npm install
-          npm list  # Vérifier les dépendances installées
+          npm list
           echo "✅ Dependencies installed."
 
-      - name: Debug GH_TOKEN  # Étape pour vérifier si le token est bien défini
+      - name: Run build script
         run: |
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            echo "✅ Running on macOS"
-            if [ -z "$GH_TOKEN" ]; then
-              echo "❌ GH_TOKEN is NOT set!"
-              exit 1
-            else
-              echo "✅ GH_TOKEN is set."
-            fi
-          elif [[ "$RUNNER_OS" == "Windows" ]]; then
-            echo "✅ Running on Windows"
-            if (-not $env:GH_TOKEN) {
-              Write-Host "❌ GH_TOKEN is NOT set!"
-              exit 1
-            } else {
-              Write-Host "✅ GH_TOKEN is set."
-            }
-          fi
-        shell: bash  # Forcer l'utilisation de bash pour macOS
-
-      - name: Build app
-        run: |
-          echo "⚙️ Building application..."
-          npm run build
-          echo "✅ Build process completed."
+          chmod +x ./build-script.sh
+          ./build-script.sh
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
@@ -64,17 +42,9 @@ jobs:
           name: release-build
           path: dist/
 
-      - name: Debug Git & Tags  # Vérifie l'état de Git et les tags
-        run: |
-          echo "📌 Current Git branch and tags:"
-          git branch -a
-          git tag -l
-          echo "✅ Git setup verified."
-
       - name: Push release to GitHub
         run: |
           echo "🚀 Creating release for tag ${{ github.ref_name }}..."
           git push origin ${{ github.ref_name }}
-          echo "✅ Release pushed."
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
