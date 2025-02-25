@@ -43,4 +43,4 @@ jobs:
           git tag -a v${{ github.run_number }} -m "Release version ${{ github.run_number }}"
           git push origin v${{ github.run_number }}
         env:
-          GH_TOKEN: ${{ secrets.GH_SECRET }}  # Ajouter le token GitHub ici
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Ajouter le token GitHub ici
