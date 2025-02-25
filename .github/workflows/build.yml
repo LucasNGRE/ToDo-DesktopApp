@@ -49,4 +49,5 @@ jobs:
           echo "Creating release for tag ${{ github.ref_name }}"
           git push origin ${{ github.ref_name }}
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Utilise maintenant le repository secret
+
