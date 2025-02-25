@@ -39,12 +39,12 @@ jobs:
               echo "✅ GH_TOKEN is set."
             fi
           elif [ "$RUNNER_OS" == "Windows" ]; then
-            if [ -z "$GH_TOKEN" ]; then
+            if (-not $env:GH_TOKEN) {
               Write-Host "❌ GH_TOKEN is NOT set!"
               exit 1
-            else
+            } else {
               Write-Host "✅ GH_TOKEN is set."
-            fi
+            }
           fi
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
