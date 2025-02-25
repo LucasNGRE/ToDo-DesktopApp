@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    environment: "Todo environnement"  # ← Ajoute ici le nom exact de ton environnement
 
     strategy:
       matrix:
@@ -25,13 +24,16 @@ jobs:
 
       - name: Install dependencies
         run: |
+          echo "📦 Installing dependencies..."
           npm install
           npm list  # Vérifier les dépendances installées
+          echo "✅ Dependencies installed."
 
       - name: Build app
         run: |
+          echo "⚙️ Building application..."
           npm run build
-          echo "Build process completed."
+          echo "✅ Build process completed."
 
       - name: Upload release assets
         uses: actions/upload-artifact@v4
@@ -39,15 +41,28 @@ jobs:
           name: release-build
           path: dist/
 
-      - name: Debug GH_TOKEN  # ← Ajoute cette étape pour vérifier si GH_TOKEN est bien accessible
-        run: echo "GH_TOKEN is set"
+      - name: Debug GH_TOKEN  # Vérifie si GH_TOKEN est bien défini
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "❌ GH_TOKEN is NOT set!"
+            exit 1
+          else
+            echo "✅ GH_TOKEN is set."
+          fi
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
+      - name: Debug Git & Tags  # Vérifie l'état de Git et les tags
+        run: |
+          echo "📌 Current Git branch and tags:"
+          git branch -a
+          git tag -l
+          echo "✅ Git setup verified."
+
       - name: Push release to GitHub
         run: |
-          echo "Creating release for tag ${{ github.ref_name }}"
+          echo "🚀 Creating release for tag ${{ github.ref_name }}..."
           git push origin ${{ github.ref_name }}
+          echo "✅ Release pushed."
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Utilise maintenant le repository secret
-
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
