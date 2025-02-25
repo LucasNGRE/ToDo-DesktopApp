@@ -29,7 +29,7 @@ jobs:
           npm list  # Vérifier les dépendances installées
           echo "✅ Dependencies installed."
       
-            - name: Debug GH_TOKEN  # Étape pour vérifier si le token est bien défini
+      - name: Debug GH_TOKEN  # Étape pour vérifier si le token est bien défini
         run: |
           if [ -z "$GH_TOKEN" ]; then
             echo "❌ GH_TOKEN is NOT set!"
@@ -39,7 +39,6 @@ jobs:
           fi
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
 
       - name: Build app
         run: |
@@ -52,17 +51,6 @@ jobs:
         with:
           name: release-build
           path: dist/
-
-      # - name: Debug GH_TOKEN  # Vérifie si GH_TOKEN est bien défini
-      #   run: |
-      #     if [ -z "$GH_TOKEN" ]; then
-      #       echo "❌ GH_TOKEN is NOT set!"
-      #       exit 1
-      #     else
-      #       echo "✅ GH_TOKEN is set."
-      #     fi
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Debug Git & Tags  # Vérifie l'état de Git et les tags
         run: |
