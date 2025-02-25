@@ -1,6 +1,8 @@
 {
   "name": "todo-app",
   "version": "1.0.0",
+  "description": "Une application de gestion de tâches.",
+  "author": "Lucas NEGRE",
   "main": "index.js",
   "scripts": {
     "start": "electron .",
@@ -13,6 +15,12 @@
   "build": {
     "appId": "com.tonapp.todo",
     "productName": "TodoApp",
+    "files": [
+    "**/*",
+    "!**/*.avi",
+    "!**/*.mov",
+    "!**/*.mp4"
+  ],
     "win": {
       "icon": "assets/icon.ico",
       "target": "nsis"

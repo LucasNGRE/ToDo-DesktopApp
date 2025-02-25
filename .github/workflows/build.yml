@@ -30,10 +30,17 @@ jobs:
       - name: Build app
         run: |
           npm run build
-          echo "Build process completed."  # Ajouter un message pour suivre
+          echo "Build process completed."
 
       - name: Upload release assets
         uses: actions/upload-artifact@v4
         with:
           name: release-build
           path: dist/
+
+      - name: Push release to GitHub
+        run: |
+          git tag -a v${{ github.run_number }} -m "Release version ${{ github.run_number }}"
+          git push origin v${{ github.run_number }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Ajouter le token GitHub ici
