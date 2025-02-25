@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          npm list  # Ajouter cette ligne pour vérifier les dépendances installées
+          npm list  # Vérifier les dépendances installées
 
       - name: Build app
         run: |
@@ -33,7 +33,7 @@ jobs:
           echo "Build process completed."  # Ajouter un message pour suivre
 
       - name: Upload release assets
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release-build
           path: dist/
