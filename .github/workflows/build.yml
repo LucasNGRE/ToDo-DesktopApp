@@ -32,13 +32,15 @@ jobs:
       - name: Debug GH_TOKEN  # Étape pour vérifier si le token est bien défini
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-            if [ -z "$GH_TOKEN" ]; then
+            # PowerShell syntax for Windows
+            if (-z $Env:GH_TOKEN) {
               Write-Host "❌ GH_TOKEN is NOT set!"
               exit 1
-            else
+            } else {
               Write-Host "✅ GH_TOKEN is set."
-            fi
+            }
           else
+            # Bash syntax for macOS/Linux
             if [ -z "$GH_TOKEN" ]; then
               echo "❌ GH_TOKEN is NOT set!"
               exit 1
