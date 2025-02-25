@@ -31,8 +31,7 @@ jobs:
 
       - name: Debug GH_TOKEN  # Étape pour vérifier si le token est bien défini
         run: |
-          if [ "$RUNNER_OS" == "macOS" ]; then
-            # Utilisation de zsh ou bash sur macOS
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
             echo "✅ Running on macOS"
             if [ -z "$GH_TOKEN" ]; then
               echo "❌ GH_TOKEN is NOT set!"
@@ -40,8 +39,7 @@ jobs:
             else
               echo "✅ GH_TOKEN is set."
             fi
-          elif [ "$RUNNER_OS" == "Windows" ]; then
-            # PowerShell sur Windows
+          elif [[ "$RUNNER_OS" == "Windows" ]]; then
             echo "✅ Running on Windows"
             if (-not $env:GH_TOKEN) {
               Write-Host "❌ GH_TOKEN is NOT set!"
@@ -50,8 +48,7 @@ jobs:
               Write-Host "✅ GH_TOKEN is set."
             }
           fi
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        shell: bash  # Forcer l'utilisation de bash pour macOS
 
       - name: Build app
         run: |
