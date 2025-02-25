@@ -41,12 +41,7 @@ jobs:
             fi
           elif [ "$RUNNER_OS" == "Windows" ]; then
             # Windows PowerShell syntax
-            if (-not $Env:GH_TOKEN) {
-              Write-Host "❌ GH_TOKEN is NOT set!"
-              exit 1
-            } else {
-              Write-Host "✅ GH_TOKEN is set."
-            }
+            powershell -Command "if (-not \$Env:GH_TOKEN) {Write-Host '❌ GH_TOKEN is NOT set!'; exit 1} else {Write-Host '✅ GH_TOKEN is set.'}"
           fi
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
