@@ -39,8 +39,9 @@ jobs:
           path: dist/
 
       - name: Push release to GitHub
-        run: |
-          git tag -a v${{ github.run_number }} -m "Release version ${{ github.run_number }}"
-          git push origin v${{ github.run_number }}
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Ajouter le token GitHub ici
+  run: |
+    echo "Creating release for tag ${{ github.ref_name }}"
+    git push origin ${{ github.ref_name }}
+  env:
+    GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Assure-toi que le secret est bien défini
+
