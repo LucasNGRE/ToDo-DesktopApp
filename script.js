@@ -12,8 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const li = document.createElement('li');
 
             const taskText = document.createElement('span');
-            taskText.textContent = task;
+            taskText.textContent = task.text;
             taskText.classList.add('task-text');
+            if (task.strikethrough) {
+                taskText.classList.add('strikethrough');
+            }
 
             const strikeButton = document.createElement('button');
             strikeButton.innerHTML = `
@@ -22,8 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 </svg>`;
             strikeButton.classList.add('strike-btn');
             strikeButton.addEventListener('click', () => {
-                taskText.classList.toggle('strikethrough');
+                task.strikethrough = !task.strikethrough;
                 saveTasks();
+                renderTasks();
             });
 
             const deleteButton = document.createElement('button');
@@ -58,14 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addTaskButton.addEventListener('click', () => {
         if (taskInput.value.trim() !== "") {
-            tasks.push(taskInput.value.trim());
+            tasks.push({ text: taskInput.value.trim(), strikethrough: false });
             taskInput.value = "";
             saveTasks();
             renderTasks();
         }
     });
 
-    // Ajout de l'événement "Entrée" pour ajouter une tâche
     taskInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
